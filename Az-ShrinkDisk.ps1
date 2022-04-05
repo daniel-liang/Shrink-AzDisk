@@ -1,11 +1,11 @@
 # Variables
 $DiskID = "" # eg. "/subscriptions/203bdbf0-69bd-1a12-a894-a826cf0a34c8/resourcegroups/rg-server1-prod-1/providers/Microsoft.Compute/disks/Server1-Server1"
-$VMName = "TargetVM"
-$DiskSizeGB = 1024
-$AzSubscription = "Subscription Name"
-$storageAccountName = "shrinktempstore"
-$storageContainerName = "shrinktempstore"
-$sargname = "storageaccount_ResourceGroupName"
+$VMName = " " # Name of Source VM
+$DiskSizeGB = 1024 # The disk size will be shrinked to
+$AzSubscription = " " # Azure Subscription Name
+$storageAccountName = " " # Storage account name used for temp storage, Premium_LRS is recommended for shorten run time.
+$storageContainerName = " " # Storage Account container name
+$sargname = " " # Storage Account Resource Group name
 
 
 # Script
@@ -41,12 +41,19 @@ $originalCaching = ($VM.StorageProfile.DataDisks | ? Name -eq $DiskName).Caching
 #Check for exisiting disks LUN
 $VMdiskCapacity = ($VM.StorageProfile.DataDisks).Capacity
 $existinglun = @()
-$i= 0
-$j = 0
+$i=0
+$j=0
 for($i = 0; $i -lt $VMdiskCapacity; $i++) {
     $existinglun += ($VM.StorageProfile.DataDisks)[$i].Lun
 }
 
+if ($existinglun -eq $VMdiskCapacity) {
+
+Write-Host "VM disk capacity reach out the limit of total disk count!" -ForegroundColor Red  -BackgroundColor White
+Write-Host "Please resize VM, and re-run" -ForegroundColor Red  -BackgroundColor White
+
+break
+}
 
 #Calculate next available LUN index
 for ($j = 0; $j -lt $VMdiskCapacity; $j++) {
@@ -64,7 +71,6 @@ for ($j = 0; $j -lt $VMdiskCapacity; $j++) {
                 break
             }
         }
-        #Add-AzVMDataDisk -VM $vm -Name $DiskName -CreateOption Attach -ManagedDiskId $DataDisk.Id -Lun $nextLunIndex
         $existinglun[$j] = $nextLunIndex
         break
     } 
