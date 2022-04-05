@@ -73,13 +73,6 @@ for ($j = 0; $j -lt $VMdiskCapacity; $j++) {
 # Get SAS URI for the Source disk
 $SAS = Grant-AzDiskAccess -ResourceGroupName $resourceGroupName -DiskName $DiskName -Access 'Read' -DurationInSecond 600000;
 
-#Provide storage account name where you want to copy the snapshot - the script will create a new one temporarily
-#$storageAccountName = "shrink" + [system.guid]::NewGuid().tostring().replace('-','').substring(1,18)'
-#$storageAccountName = "shrinktempstore"
-
-#Name of the storage container where the downloaded snapshot will be stored
-#$storageContainerName = $storageAccountName
-
 #Provide the name of the VHD file to which snapshot will be copied.
 $destinationVHDFileName = "$($Disk.Name).vhd"
 
@@ -187,7 +180,6 @@ $VM = Add-AzVMDataDisk `
 Update-AzVM -ResourceGroupName $resourceGroupName -VM $VM
 
 $VM | Start-AzVM
-Get-Date
 
 Start-Sleep 180
 
