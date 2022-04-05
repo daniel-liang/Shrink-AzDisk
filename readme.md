@@ -25,3 +25,20 @@ The Powershell Script will:
 * Storage account and container as temp storage
 * Source VM can attach at least one more disk
 
+## How to Use
+
+1. Create tempolary storageaccount for shrink disk
+   *Sample script*
+```
+$storageAccountName = "shrinktempstore"
+$storageContainerName = $storageAccountName
+$sargname = "shrinkrg"
+$saLocation = "australiaeast"
+
+$StorageAccount = Set-AzStorageAccount -ResourceGroupName $sargname -Name $storageAccountName -SkuName Premium_LRS -Location $saLocation
+$destinationContext = $StorageAccount.Context
+$container = New-AzStorageContainer -Name $storageContainerName -Permission Off -Context $destinationContext
+
+```
+
+2. 
