@@ -5,13 +5,13 @@ Microsoft Azure does not support to reduce/shrink the disk (managed or unmanaged
 The technique used to the reduce the disk in this post is 
 
 The Script will:
--- Create a temporary Storage Acccount
--- Create a new temp disk in the new Storage Account to read the footer from
--- Copy the Managed  Disk into the temp Storage Account
--- Change the footer (size) so the disk shrinks
--- Convert the disk back to a Managed Disk
--- Swap the VM’s current Data disk with the new smaller Disk
--- Tidy/Delete the temp storage account and the old managed disk
+*  Create a temporary Storage Acccount
+*  Create a new temp disk in the new Storage Account to read the footer from
+*  Copy the Managed  Disk into the temp Storage Account
+*  Change the footer (size) so the disk shrinks
+*  Convert the disk back to a Managed Disk
+*  Swap the VM’s current Data disk with the new smaller Disk
+*  Tidy/Delete the temp storage account and the old managed disk
 
 
 identical to that of the Microsoft post mentioned above, except that here we use only PowerShell without relying on an opensource tool.
