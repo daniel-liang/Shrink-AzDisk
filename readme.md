@@ -11,6 +11,7 @@ The Powershell Script will:
 *  Convert the disk back to a new Managed Disk
 *  Detach original data disk
 *  Attach shrinked disk
+*  Power up souce VM
 *  Tidy/Delete the temp storage account
 
 **Original Disk will be detached, avialablty for rollback.**
@@ -27,7 +28,8 @@ The Powershell Script will:
 
 ## How to Use
 
-1. Create tempolary storageaccount for shrink disk
+1. Create tempolary Storage Account
+   
    *Sample script*
 ```
 $storageAccountName = "shrinktempstore"
@@ -41,4 +43,8 @@ $container = New-AzStorageContainer -Name $storageContainerName -Permission Off 
 
 ```
 
-2. 
+2. Shrink volume size inside OS, shut down source VM
+    
+3. Run scirpt 
+
+
